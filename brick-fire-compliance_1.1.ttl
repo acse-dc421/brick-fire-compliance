@@ -1,0 +1,182 @@
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix brick: <https://brickschema.org/schema/Brick#> .
+@prefix haz:  <https://brickschema.org/schema/Brick/extension/fire-compliance#> .
+
+<https://w3id.org/brick/fire-compliance>
+    a owl:Ontology ;
+    rdfs:label "Brick Fire Compliance Ontology"@en ;
+    rdfs:comment "An ontology extending Brick to represent operational fire-safety assets, hazards, and compliance relations in buildings."@en ;
+    owl:versionInfo "v1.1" ;
+    owl:imports <https://brickschema.org/schema/Brick> ;
+    dcterms:creator "Loughborough University, 2025" ;
+    dcterms:license <https://github.com/BrickSchema/brick/blob/master/LICENSE> ;
+    rdfs:seeAlso <https://brickschema.org> ;
+    rdfs:isDefinedBy <https://github.com/acse-dc421/brick-fire-compliance> .
+
+#################################################################
+# Class Hierarchy
+#################################################################
+
+haz:Location a owl:Class ;
+    rdfs:label "Location"@en ;
+    rdfs:comment "Represents spatial entities such as rooms, corridors, and exits. Reuses Brick’s spatial hierarchy for spatial reasoning in compliance analysis."@en ;
+    rdfs:subClassOf brick:Location .
+
+haz:FireAsset a owl:Class ;
+    rdfs:label "Fire Asset"@en ;
+    rdfs:comment "Represents fire-safety-critical equipment installed in buildings. Defined as a subclass of Brick:Equipment to enable semantic interoperability."@en ;
+    rdfs:subClassOf brick:Equipment .
+
+haz:Hazard a owl:Class ;
+    rdfs:label "Hazard"@en ;
+    rdfs:comment "Represents an operational fire hazard or non-compliance condition detected within the building environment. Introduced as a new modular class not natively covered by Brick."@en .
+
+haz:FireExtinguisher a owl:Class ;
+    rdfs:label "Fire Extinguisher"@en ;
+    rdfs:comment "Portable device for manual suppression of fires. Detected and tracked as a fire-safety asset."@en ;
+    rdfs:subClassOf haz:FireAsset .
+
+haz:SmokeDetector a owl:Class ;
+    rdfs:label "Smoke Detector"@en ;
+    rdfs:comment "Sensor that detects smoke as an indicator of fire."@en ;
+    rdfs:subClassOf haz:FireAsset .
+
+haz:FireBlanket a owl:Class ;
+    rdfs:label "Fire Blanket"@en ;
+    rdfs:comment "Safety device used to extinguish small fires by smothering flames."@en ;
+    rdfs:subClassOf haz:FireAsset .
+
+haz:CallPoint a owl:Class ;
+    rdfs:label "Call Point"@en ;
+    rdfs:comment "Manual activation point for triggering fire alarms."@en ;
+    rdfs:subClassOf haz:FireAsset .
+
+haz:AlarmSounder a owl:Class ;
+    rdfs:label "Alarm Sounder"@en ;
+    rdfs:comment "Audible alarm device used to signal fire emergencies."@en ;
+    rdfs:subClassOf haz:FireAsset .
+
+haz:AlarmFlasher a owl:Class ;
+    rdfs:label "Alarm Flasher"@en ;
+    rdfs:comment "Visual strobe or flashing light indicating alarm activation."@en ;
+    rdfs:subClassOf haz:FireAsset .
+
+haz:FireExitSign a owl:Class ;
+    rdfs:label "Fire Exit Sign"@en ;
+    rdfs:comment "Illuminated sign indicating safe egress routes during evacuation."@en ;
+    rdfs:subClassOf haz:FireAsset .
+
+haz:SafetySignage a owl:Class ;
+    rdfs:label "Safety Signage"@en ;
+    rdfs:comment "General safety or instruction signs relevant to fire evacuation and awareness."@en ;
+    rdfs:subClassOf haz:FireAsset .
+
+haz:FireDoor a owl:Class ;
+    rdfs:label "Fire Door"@en ;
+    rdfs:comment "A door assembly designed to resist the passage of fire and smoke, often equipped with self-closing mechanisms."@en ;
+    rdfs:subClassOf haz:FireAsset .
+
+haz:SprinklerSystem a owl:Class ;
+    rdfs:label "Sprinkler System"@en ;
+    rdfs:comment "A fixed automatic fire suppression system using water or other agents, typically installed in ceilings."@en ;
+    rdfs:subClassOf haz:FireAsset .
+
+#################################################################
+# Object Properties
+#################################################################
+
+haz:hasLocation a owl:ObjectProperty ;
+    rdfs:label "has location"@en ;
+    rdfs:comment "Links a FireAsset or Hazard instance to its spatial context represented as a Location node."@en ;
+    rdfs:domain [ a owl:Class ; owl:unionOf ( haz:FireAsset haz:Hazard ) ] ;
+    rdfs:range haz:Location .
+
+haz:hasHazard a owl:ObjectProperty ;
+    rdfs:label "has hazard"@en ;
+    rdfs:comment "Associates a Location with the Hazard instances observed or detected within it."@en ;
+    rdfs:domain haz:Location ;
+    rdfs:range haz:Hazard .
+
+haz:affectsEquipment a owl:ObjectProperty ;
+    rdfs:label "affects asset"@en ;
+    rdfs:comment "Relates a Hazard instance to the FireAsset that is directly affected or obstructed by the condition."@en ;
+    rdfs:domain haz:Hazard ;
+    rdfs:range haz:FireAsset .
+
+haz:connectsTo a owl:ObjectProperty, owl:SymmetricProperty ;
+    rdfs:label "connects to"@en ;
+    rdfs:comment "Represents physical or functional adjacency between spatial locations, supporting egress path reasoning."@en ;
+    rdfs:domain haz:Location ;
+    rdfs:range haz:Location .
+
+haz:hazardType a owl:ObjectProperty ;
+    rdfs:label "hazard type"@en ;
+    rdfs:comment "Links a hazard instance to a defined category within the HazardTypeEnum class."@en ;
+    rdfs:domain haz:Hazard ;
+    rdfs:range haz:HazardTypeEnum .
+
+haz:violatesClause a owl:ObjectProperty ;
+    rdfs:label "violates clause"@en ;
+    rdfs:comment "Links a Hazard instance to a referenced regulatory clause or requirement that it violates."@en ;
+    rdfs:domain haz:Hazard ;
+    rdfs:range rdfs:Resource .
+
+#################################################################
+# Datatype Properties
+#################################################################
+
+haz:UID a owl:DatatypeProperty ;
+    rdfs:label "unique identifier"@en ;
+    rdfs:comment "Unique string identifier assigned to each entity instance (Location, FireAsset, or Hazard)."@en ;
+    rdfs:domain [ a owl:Class ; owl:unionOf ( haz:Location haz:FireAsset haz:Hazard ) ] ;
+    rdfs:range xsd:string .
+
+haz:assetType a owl:DatatypeProperty ;
+    rdfs:label "asset type"@en ;
+    rdfs:comment "Specifies the subtype or semantic category of a FireAsset instance."@en ;
+    rdfs:domain haz:FireAsset ;
+    rdfs:range xsd:string .
+
+haz:detectedTime a owl:DatatypeProperty ;
+    rdfs:label "detected time"@en ;
+    rdfs:domain haz:Hazard ;
+    rdfs:range xsd:dateTime .
+
+haz:hazardDescription a owl:DatatypeProperty ;
+    rdfs:label "hazard description"@en ;
+    rdfs:domain haz:Hazard ;
+    rdfs:range xsd:string .
+
+haz:hazardRiskLevel a owl:DatatypeProperty ;
+    rdfs:label "hazard risk level"@en ;
+    rdfs:domain haz:Hazard ;
+    rdfs:range xsd:string .
+
+haz:mitigationStatus a owl:DatatypeProperty ;
+    rdfs:label "mitigation status"@en ;
+    rdfs:domain haz:Hazard ;
+    rdfs:range xsd:string .
+
+#################################################################
+# Hazard Type Enumeration
+#################################################################
+
+haz:HazardTypeEnum a owl:Class ;
+    rdfs:label "Hazard Type Enumeration"@en ;
+    rdfs:comment "A controlled vocabulary defining semantic categories of fire hazards used in compliance reasoning."@en .
+
+haz:Obstruction a haz:HazardTypeEnum ;
+    rdfs:label "Obstruction"@en ;
+    rdfs:comment "An object or condition that blocks egress routes or access to fire safety equipment."@en .
+
+haz:CombustibleStorage a haz:HazardTypeEnum ;
+    rdfs:label "Combustible Storage"@en ;
+    rdfs:comment "Storage of combustible materials in restricted or hazardous areas."@en .
+
+haz:InaccessibleEquipment a haz:HazardTypeEnum ;
+    rdfs:label "Inaccessible Equipment"@en ;
+    rdfs:comment "Fire safety equipment that is obstructed, misplaced, or otherwise inaccessible for emergency use."@en .
