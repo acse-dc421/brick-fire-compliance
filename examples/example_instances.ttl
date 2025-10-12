@@ -1,0 +1,57 @@
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix brick: <https://brickschema.org/schema/Brick#> .
+@prefix haz:   <https://brickschema.org/schema/Brick/extension/fire-compliance#> .
+@prefix ex:    <https://example.org/building#> .
+
+#################################################################
+# Example Instances for Brick Fire Compliance Ontology
+#################################################################
+
+### --- Location Instances ---
+
+ex:Room101 a haz:Location ;
+    haz:UID "LOC001" ;
+    rdfs:label "Kitchen - Ground Floor"@en ;
+    haz:roomType "Kitchen" .
+
+ex:CorridorA a haz:Location ;
+    haz:UID "LOC002" ;
+    rdfs:label "Main Corridor"@en ;
+    haz:roomType "Corridor" ;
+    haz:connectsTo ex:Room101 .
+
+### --- Fire Asset Instances ---
+
+ex:Extinguisher1 a haz:FireExtinguisher ;
+    haz:UID "AS001" ;
+    haz:assetType "FireExtinguisher" ;
+    rdfs:label "CO₂ Fire Extinguisher - Kitchen"@en ;
+    haz:hasLocation ex:Room101 .
+
+ex:SmokeDetector1 a haz:SmokeDetector ;
+    haz:UID "AS002" ;
+    haz:assetType "SmokeDetector" ;
+    haz:hasLocation ex:Room101 .
+
+### --- Hazard Instances ---
+
+ex:Hazard001 a haz:Hazard ;
+    haz:UID "HZ001" ;
+    haz:hasLocation ex:Room101 ;
+    haz:affectsEquipment ex:Extinguisher1 ;
+    haz:hazardType haz:InaccessibleEquipment ;
+    haz:hazardDescription "A large cardboard box is placed in front of the fire extinguisher, blocking access." ;
+    haz:hazardRiskLevel "High" ;
+    haz:mitigationStatus "Unaddressed" ;
+    haz:detectedTime "2025-03-15T10:32:00"^^xsd:dateTime .
+
+ex:Hazard002 a haz:Hazard ;
+    haz:UID "HZ002" ;
+    haz:hasLocation ex:CorridorA ;
+    haz:hazardType haz:CombustibleStorage ;
+    haz:hazardDescription "Paint cans stored along corridor egress path." ;
+    haz:hazardRiskLevel "Medium" ;
+    haz:mitigationStatus "Pending" ;
+    haz:detectedTime "2025-03-15T10:35:00"^^xsd:dateTime .
