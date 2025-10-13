@@ -1,0 +1,14 @@
+{
+  "rule1": {
+    "clause_id": "OSHA_1910_37_a_3",
+    "reference": "OSHA 29 CFR 1910.37(a)(3)",
+    "description": "Exit routes must be free and unobstructed.",
+    "query_file": "query_egress_obstruction.sparql"
+  },
+  "rule2": {
+    "clause_id": "OSHA_1926_150_a_2",
+    "reference": "OSHA 29 CFR 1926.150(a)(2)",
+    "description": "Access to all available firefighting equipment shall be maintained at all times.",
+    "query_file": "query_equipment_access.sparql"
+  }
+}

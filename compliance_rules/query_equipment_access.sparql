@@ -1,0 +1,13 @@
+# OSHA 29 CFR 1926.150(a)(2)
+# Access to all available firefighting equipment shall be maintained at all times.
+
+PREFIX haz: <https://brickschema.org/schema/Brick/extension/fire-compliance#>
+
+SELECT ?loc ?hazType ?desc
+WHERE {
+  ?haz a haz:Hazard ;
+       haz:hasLocation ?loc ;
+       haz:hazardType ?hazType ;
+       haz:hazardDescription ?desc .
+  FILTER(?hazType = haz:InaccessibleEquipment)
+}
