@@ -65,7 +65,7 @@ brick-fire-compliance/
 
 The figure below shows the integration between Brick and the fire-compliance extension:
 
-![Ontology Diagram](docs/bfco_diagram.png)
+`To be released...`
 
 **Legend:**
 - ⚫ Original Brick definitions  
