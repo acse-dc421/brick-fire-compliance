@@ -1,0 +1,13 @@
+#  OSHA 29 CFR 1910.37(a)(3)
+# Exit routes must be free and unobstructed.
+
+PREFIX haz: <https://brickschema.org/schema/Brick/extension/fire-compliance#>
+
+SELECT ?loc ?hazType ?desc
+WHERE {
+  ?haz a haz:Hazard ;
+       haz:hasLocation ?loc ;
+       haz:hazardType ?hazType ;
+       haz:hazardDescription ?desc .
+  FILTER(?hazType IN (haz:Obstruction, haz:CombustibleStorage))
+}
