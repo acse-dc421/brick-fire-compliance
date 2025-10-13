@@ -14,6 +14,37 @@ The Brick Fire Compliance Ontology introduces new classes and relations for mode
 
 ---
 
+## 📘 File Structure
+
+```
+brick-fire-compliance/
+│
+├── ontology/
+│   └── brick-fire-compliance_1.1.ttl        # Core ontology
+│
+├── compliance_rules/
+│   ├── rule_mapping.json                    # Defined compliance queries (OSHA-based)
+│   ├── query_egress_obstruction.sparql
+│   └── query_equipment_access.sparql
+│
+├── examples/
+│   ├── example_instances.ttl                # Sample building data (valid)
+│   ├── error_example_instances.ttl          # Invalid data sample (for SHACL testing)
+│   └── run_example.py                       # Quick demo (planned)
+│
+├── docs/
+│   └── ontology_diagram.png                 # Visual schema diagram
+│
+├── validation/
+│   ├── shacl_validation.ttl                 # SHACL validation shapes
+│   └── validate_example.py                  # Executable validation script
+│
+└── README.md
+```
+
+
+---
+
 ## 🧩 Key Features
 
 - **Partial alignment with Brick v1.5+**  
@@ -46,33 +77,8 @@ Core relationships include:
 - `connectsTo` – models spatial adjacency for egress reasoning
 - `violatesClause` – connects `Hazard` to referenced regulations
 
+
 ---
-
-## 📘 File Structure
-
-brick-fire-compliance/
-│
-├── ontology/
-│ └── brick-fire-compliance_1.1.ttl # Core ontology
-│
-├──compliance_rules/
-│ ├── rule_mapping.json        # defined compliance queries
-│ ├── query_egress_obstruction.sparql
-│ └── query_equipment_access.sparql
-│
-├── examples/
-│ ├── example_instances.ttl # Sample building data
-│ ├── error_example_instances.sparql # Invalid data sample
-│ └── run_example.py # Quick demo (planned)
-│
-├── docs/
-│ └── ontology_diagram.png # Visual schema diagram
-│
-├── validation/
-│ ├── schacl_validation.ttl # SHACL validation shapes
-│ └── validate_example.ttl # Validation script
-│
-└── README.md
 
 
 ## ✅ Validation
@@ -156,4 +162,4 @@ This ontology is released under the [Creative Commons Attribution 4.0 Internatio
 
 ## 🏛 Acknowledgements
 
-Developed by **Loughborough University** under the WTW Research Network Technology-driven Next Generation Insurance *TECHNGI* program, with contributions to the broader Brick community for enhancing **operational fire-safety representation** in building digital twins.
+Developed by **Loughborough University** under the WTW Research Network Technology driven Next Generation Insurance *TECHNGI* program, with contributions to the broader Brick community for enhancing **operational fire-safety representation** in building digital twins.
