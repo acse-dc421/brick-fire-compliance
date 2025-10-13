@@ -23,7 +23,7 @@ brick-fire-compliance/
 │   └── brick-fire-compliance_1.1.ttl        # Core ontology
 │
 ├── compliance_rules/
-│   ├── rule_mapping.json                    # Defined compliance queries (OSHA-based)
+│   ├── rule_mapping.json                    # Example compliance queries
 │   ├── query_egress_obstruction.sparql
 │   └── query_equipment_access.sparql
 │
