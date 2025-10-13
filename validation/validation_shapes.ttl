@@ -1,0 +1,89 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix haz: <https://brickschema.org/schema/Brick/extension/fire-compliance#> .
+
+#################################################################
+# SHACL Validation Shapes for Brick Fire Compliance Ontology
+#################################################################
+
+### Shape 1 — FireAsset must have a Location
+haz:FireAssetLocationShape a sh:NodeShape ;
+    sh:targetClass haz:FireAsset ;
+    sh:property [
+        sh:path haz:hasLocation ;
+        sh:minCount 1 ;
+        sh:message "Every FireAsset must be linked to a Location via haz:hasLocation."@en ;
+    ] ;
+    sh:severity sh:Violation .
+
+### Shape 2 — Hazard must have a hazardType
+haz:HazardTypeShape a sh:NodeShape ;
+    sh:targetClass haz:Hazard ;
+    sh:property [
+        sh:path haz:hazardType ;
+        sh:minCount 1 ;
+        sh:message "Each Hazard instance must declare a hazardType (e.g., Obstruction, CombustibleStorage)."@en ;
+    ] ;
+    sh:severity sh:Violation .
+
+### Shape 3 — Hazard must have at least one associated Location
+haz:HazardLocationShape a sh:NodeShape ;
+    sh:targetClass haz:Hazard ;
+    sh:property [
+        sh:path haz:hasLocation ;
+        sh:minCount 1 ;
+        sh:message "Each Hazard must reference a Location where it occurs."@en ;
+    ] ;
+    sh:severity sh:Violation .
+
+### Shape 4 — Obstruction-type hazards should affect at least one Equipment
+haz:ObstructionAffectsShape a sh:NodeShape ;
+    sh:targetClass haz:Hazard ;
+    sh:rule [
+        a sh:TripleRule ;
+        sh:subject sh:this ;
+        sh:predicate haz:affectsEquipment ;
+        sh:object haz:FireAsset ;
+    ] ;
+    sh:condition [
+        sh:path haz:hazardType ;
+        sh:hasValue haz:Obstruction ;
+    ] ;
+    sh:property [
+        sh:path haz:affectsEquipment ;
+        sh:minCount 1 ;
+        sh:message "Obstruction hazards should specify which equipment is affected (e.g., blocked extinguisher)."@en ;
+    ] ;
+    sh:severity sh:Warning .
+
+
+### Shape 5 — All Hazard instances must have a mitigationStatus
+haz:HazardMitigationShape a sh:NodeShape ;
+    sh:targetClass haz:Hazard ;
+    sh:property [
+        sh:path haz:mitigationStatus ;
+        sh:minCount 1 ;
+        sh:message "Hazard instances must include mitigationStatus (Rectified, Pending, or Unaddressed)."@en ;
+    ] ;
+    sh:severity sh:Violation .
+
+### Shape 6 — FireDoor must have an associated FireDoorStatus Point
+haz:FireDoorStatusShape a sh:NodeShape ;
+    sh:targetClass haz:FireDoor ;
+    sh:property [
+        sh:path haz:hasPoint ;
+        sh:minCount 1 ;
+        sh:message "Each FireDoor should have an associated status point (e.g., open/closed) for monitoring."@en ;
+    ] ;
+    sh:severity sh:Info .
+
+### Shape 7 — Circular location connectivity check (optional structural consistency)
+haz:LocationConnectivityShape a sh:NodeShape ;
+    sh:targetClass haz:Location ;
+    sh:property [
+        sh:path haz:connectsTo ;
+        sh:message "Location connectivity defined via haz:connectsTo should form a consistent bidirectional graph."@en ;
+    ] ;
+    sh:severity sh:Info .
