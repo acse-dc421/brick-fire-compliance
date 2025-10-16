@@ -1,0 +1,25 @@
+@prefix haz: <https://brickschema.org/schema/Brick/extension/fire-compliance#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+[] a sh:ValidationReport ;
+    sh:conforms false ;
+    sh:result [ a sh:ValidationResult ;
+            sh:focusNode <https://example.org/building#Hazard003> ;
+            sh:resultMessage "Each Hazard instance must declare a hazardType (e.g., Obstruction, CombustibleStorage)."@en ;
+            sh:resultPath haz:hazardType ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
+            sh:sourceShape [ sh:message "Each Hazard instance must declare a hazardType (e.g., Obstruction, CombustibleStorage)."@en ;
+                    sh:minCount 1 ;
+                    sh:path haz:hazardType ] ],
+        [ a sh:ValidationResult ;
+            sh:focusNode <https://example.org/building#SmokeDetector3> ;
+            sh:resultMessage "Every FireAsset must be linked to a Location via haz:hasLocation."@en ;
+            sh:resultPath haz:hasLocation ;
+            sh:resultSeverity sh:Violation ;
+            sh:sourceConstraintComponent sh:MinCountConstraintComponent ;
+            sh:sourceShape [ sh:message "Every FireAsset must be linked to a Location via haz:hasLocation."@en ;
+                    sh:minCount 1 ;
+                    sh:path haz:hasLocation ] ] .
+
