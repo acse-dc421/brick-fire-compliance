@@ -30,13 +30,14 @@ brick-fire-compliance/
 ├── examples/
 │   ├── example_instances.ttl                # Sample building data (valid)
 │   ├── error_example_instances.ttl          # Invalid data sample (for SHACL testing)
-│   └── run_example.py                       # Quick demo (planned)
+│   └── run_example.py                       # Quick demo
 │
 ├── docs/
-│   └── ontology_diagram.png                 # Visual schema diagram
+│   └── ontology_diagram.png                 # Visual schema diagram (planned)
 │
 ├── validation/
 │   ├── shacl_validation.ttl                 # SHACL validation shapes
+│   ├── validation_report.ttl                 # Validation report example
 │   └── validate_example.py                  # Executable validation script
 │
 └── README.md
@@ -132,6 +133,49 @@ Conforms: True
 Execution complete. ✅
 ------------------------------------------------------------
 ```
+
+
+---
+
+## 🚀 Quick Start
+
+### 1️⃣ Install dependencies
+```bash
+pip install rdflib
+```
+
+### 2️⃣ Run the example
+```bash
+python examples/run_example.py
+```
+
+**Expected output:**
+```
+✓ Ontology and instance data loaded.
+
+Loaded regulatory mapping:
+  rule1 → OSHA 29 CFR 1910.37(a)(3)
+  rule2 → OSHA 29 CFR 1926.150(a)(2)
+
+------------------------------------------------------------
+Running rule1: OSHA 29 CFR 1910.37(a)(3)
+Rule: Exit routes must be free and unobstructed.
+⚠ Violations found:
+ - Location: https://example.org/building#CorridorA | Hazard: CombustibleStorage | Description: Paint cans stored along corridor egress path.
+
+------------------------------------------------------------
+Running rule2: OSHA 29 CFR 1926.150(a)(2)
+Rule: Access to all available firefighting equipment shall be maintained at all times.
+⚠ Violations found:
+ - Location: https://example.org/building#Room101 | Hazard: InaccessibleEquipment | Description: A large cardboard box is placed in front of the fire extinguisher, blocking access.
+
+------------------------------------------------------------
+Compliance audit complete ✅
+```
+
+
+---
+
 
 ## 🧠 Integration & Reasoning
 
